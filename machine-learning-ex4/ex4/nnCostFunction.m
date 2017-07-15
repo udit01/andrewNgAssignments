@@ -61,23 +61,57 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+% J = sum( -(y).*(log(sigmoid(X*theta)))-(ones(m,1)-y).*(log(ones(m,1)-sigmoid(X*theta))) )/m + (lambda/(2*m))*(sum(theta.^2)-(theta(1)^2) );
+% grad = ( (X')*(sigmoid(X*theta)-y) )/m +(lambda/m)*(theta) ;
+% 
+% grad(1) = grad(1) - (lambda/m)*(theta(1)) ;
+
+%  a1 = X;
+ a1 = [ones(m,1) X];
+% a2 = sigmoid(a1*Theta1');
+ a2 = [ones(m,1) sigmoid(a1*Theta1')];
+ a3 = sigmoid(a2 * Theta2');
+
+for k = 1:num_labels
+   J = J + sum (-(y==k).*( log( a3(:,k) ) )-( 1.0 -(y==k)).*(log( 1.0 - a3(:,k) )) ) /m ;
+end
+
+the1 = Theta1( : , 2:size(Theta1,2) );
+the2 = Theta2( : , 2:size(Theta2,2) );
+
+J = J + (lambda/(2*m))*( sum(sum(the1.^2),2) + sum(sum(the2.^2),2) );
 
 
 
+for t = 1:m
+   aa1 = [1 ; X(t,:)'];
+   zz2 = Theta1*aa1;
+   aa2 = [1 ; sigmoid(zz2)];
+   zz3 = Theta2*aa2; 
+   aa3 = sigmoid(zz3);
+   
+   yk = zeros(num_labels,1);
+   yk(y(t,:)) = 1;
+   delta3 = aa3 - (yk);
+   
+   
+   the2 = Theta2( : , 2:size(Theta2,2) );
 
+   delta2 = ((the2')*delta3).*(sigmoidGradient(zz2));
+   
+%    the1 = Theta1( : , 2:size(Theta1,2) );
+end
 
+    Del2 = Theta2_grad;%%Basically just zeroes
+    Del2 = Del2 + delta3*aa2';
 
+    Del1 = Theta1_grad;
+    Del1 = Del1 + delta2*aa1';
 
-
-
-
-
-
-
-
-
-
-
+    %%But Del1 and 2 should be a matrix
+    
+    Theta1_grad = (Del1)/m;
+    Theta2_grad = (Del2)/m;
 
 
 % -------------------------------------------------------------
