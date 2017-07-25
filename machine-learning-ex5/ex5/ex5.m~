@@ -219,10 +219,10 @@ end
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
-lambda = 3;
-theta_final = trainLinearReg(X,y,lambda);
+
+ theta_final = trainLinearReg(X,y,3);
 error_test = linearRegCostFunction(Xtest,ytest,theta_final,0);
 
-fprintf('TEST ERROR(AT LAMBDA = %f) is = %f\n',lambda,error_test);
+fprintf('TEST ERROR = %f',error_test);
 fprintf('Program paused. Press enter to continue.\n');
 pause;
