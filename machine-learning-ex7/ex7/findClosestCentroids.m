@@ -9,7 +9,8 @@ function idx = findClosestCentroids(X, centroids)
 K = size(centroids, 1);
 
 % You need to return the following variables correctly.
-idx = zeros(size(X,1), 1);
+m = size(X,1);
+idx = zeros(m, 1);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Go over every example, find its closest centroid, and store
@@ -20,12 +21,13 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
+% TO extend the X(i,:) row to "K" columns
 
-
-
-
-
-
+for i = 1:m
+    extendedMatrixRow = repmat(X(i,:),K,1);% how to use inbuilt method to extend this ?
+   [minDist , indexk] = min(sum((extendedMatrixRow - centroids).^2,2),[],1);
+   idx(i) = indexk;
+end    
 
 % =============================================================
 
