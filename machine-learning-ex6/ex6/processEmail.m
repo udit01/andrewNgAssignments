@@ -97,11 +97,15 @@ while ~isempty(email_contents)
     %       str2). It will return 1 only if the two strings are equivalent.
     %
 
+% i will try a binary serach
+ % 0 implies index not found 
+ 
+% index = binarySearch(str , 0,length(vocabList) , vocabList);
 
-
-
-
-
+    [ttf ,index] = ismember(str , vocabList);
+   if(ttf == 1)
+       word_indices = [word_indices ; index];
+   end
 
 
 
