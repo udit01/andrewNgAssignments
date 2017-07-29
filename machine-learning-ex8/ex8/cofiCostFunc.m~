@@ -17,7 +17,7 @@ Theta = reshape(params(num_movies*num_features+1:end), ...
 X_grad = zeros(size(X));
 Theta_grad = zeros(size(Theta));
 
-J =  sum( sum( ( (X*Theta' - Y).*R).^2 ) )/2 +(lambda/2)*( sum(sum(Theta.^2)) + sum(sum(X.^2)) );
+J =  sum( sum( ( (X*Theta' - Y).*R).^2 ) )/2;
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost function and gradient for collaborative
@@ -44,17 +44,15 @@ J =  sum( sum( ( (X*Theta' - Y).*R).^2 ) )/2 +(lambda/2)*( sum(sum(Theta.^2)) + 
 
 for i=1:num_movies
     idx = find(R(i, :)==1);
-    X_grad(i,:) = ( X(i,:)*Theta(idx,:)' - Y(i,idx) )*Theta(idx,:) + (lambda)*(X(i,:));
+    X_grad(i,:) = ( X(i,:)*Theta(idx,:)' - Y(i,idx) )*Theta(idx,:);
 end
 
 % i don't legitly understand the 2nd loop ie the one below I honestly just
-% played around with the dimensions
+% play
 for j=1:num_users
     idx = find(R(:, j)==1);
-    Theta_grad(j,:) = ( (X(idx,:)*Theta(j,:)') - Y(idx,j) )'*X(idx,:) + (lambda)*(Theta(j,:));
+    Theta_grad(j,:) = ( (X(idx,:)*Theta(j,:)') - Y(idx,j) )'*X(idx,:);
 end
-
-%regularization terms in both grads came by dimenstion matching
 
 
 
